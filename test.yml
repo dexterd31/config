@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  web:
+    container_name: nginx_test
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "/root/html:/usr/share/nginx/html"
+    depends_on:
+      - db
+    networks:
+      network_test_now:
+        ipv4_address: 172.18.0.4
+
+  db:
+    container_name: mysql_test
+    ports:
+      - "3306:3306"
+    env_file: keys.env
+    image: mysql
+    networks:
+      network_test_now:
+        ipv4_address: 172.18.0.3
+  
+
+networks:
+  network_test_now:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.0.0/24
+         gateway: 172.18.0.1
+
+       
+        
